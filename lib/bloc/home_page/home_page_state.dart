@@ -1,28 +1,23 @@
-import 'package:flutter/foundation.dart';
-
 abstract class HomePageState {
+  late bool isConnected;
   late int counter;
 }
 
 class HomePageEmptyState extends HomePageState {
   HomePageEmptyState() {
     counter = 0;
+    isConnected = false;
   }
 }
 
-class HomePageCounterState extends HomePageState {
+class HomePageCounterState extends HomePageEmptyState {
   HomePageCounterState(int counter) {
     this.counter = counter;
   }
 }
 
-class HomePageMqttConnectingState extends HomePageState {
-  bool isConnected = false;
+class HomePageMqttState extends HomePageCounterState {
+  HomePageMqttState(bool connected, super.counter) {
+    isConnected = connected;
+  }
 }
-
-class HomePageMqttConnectedState extends HomePageState {
-  bool isConnected = false;
-  HomePageMqttConnectedState({required this.isConnected }) : assert(isConnected != false);
-}
-
-class HomePageMqttConnectionErrorState extends HomePageState {}

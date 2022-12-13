@@ -24,7 +24,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    developer.log("hello world");
+    homePageCubit.mqttConnect();
   }
 
   @override
@@ -35,6 +35,12 @@ class _MyHomePageState extends State<MyHomePage> {
         return Scaffold(
           appBar: AppBar(
             title: const Text("test"),
+            actions: <Widget>[
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 24),
+                child: Icon(Icons.settings, color: state.isConnected ? Colors.green : Colors.red),
+              )
+            ],
           ),
           body: Center(
             child: Column(
