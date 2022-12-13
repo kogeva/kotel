@@ -42,4 +42,9 @@ class MqttService {
 
   void disconnected() {
   }
+
+  void addSubscribe(String topic, Function(String topic, String payload) callback )
+  {
+    _mqttClient.subscribe(topic, MqttQos.atMostOnce);
+  }
 }
