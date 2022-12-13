@@ -29,15 +29,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("test"),
-      ),
-      body: Center(
-        child: BlocBuilder<HomePageCubit, HomePageEmptyState>(
-          bloc: homePageCubit,
-          builder: (context, state) {
-            return Column(
+    return BlocBuilder<HomePageCubit, HomePageState>(
+      bloc: homePageCubit,
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("test"),
+          ),
+          body: Center(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 const Text(
@@ -48,15 +48,15 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: Theme.of(context).textTheme.headline4,
                 ),
               ],
-            );
-          },
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: (){ homePageCubit.incrementCounter(); },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+            ),
+          ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: (){ homePageCubit.incrementCounter(); },
+            tooltip: 'Increment',
+            child: const Icon(Icons.add),
+          ), // This trailing comma makes auto-formatting nicer for build methods.
+        );
+      },
     );
   }
 }
