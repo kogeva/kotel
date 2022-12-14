@@ -37,20 +37,25 @@ class _MyHomePageState extends State<MyHomePage> {
               )
             ],
           ),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'You have pushed the button this many times:',
-                ),
-                Text(
-                  state.counter.toString(),
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-              ],
-            ),
-          ),
+          body: Row(children: [
+            Column(children: <Widget>[
+              Text(state.roomTemperature.toString())
+            ],),
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const Text(
+                    'You have pushed the button this many times:',
+                  ),
+                  Text(
+                    state.counter.toString(),
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                ],
+              ),
+            )
+          ],),
           floatingActionButton: FloatingActionButton(
             onPressed: (){ homePageCubit.incrementCounter(); },
             tooltip: 'Increment',

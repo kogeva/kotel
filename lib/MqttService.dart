@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:mqtt_client/mqtt_client.dart';
 import 'package:mqtt_client/mqtt_server_client.dart';
+import 'dart:developer';
+import 'dart:convert';
 
 class MqttSettings {
   String host;
@@ -14,6 +16,7 @@ class MqttSettings {
 
 class MqttService {
   late MqttServerClient _mqttClient;
+  late Map<String, Function> subscribeCallbacks;
 
   MqttService() {
     _mqttClient = MqttServerClient('127.0.0.1', '');
@@ -25,6 +28,9 @@ class MqttService {
 
     _mqttClient.onConnected = connected;
     _mqttClient.onDisconnected = disconnected;
+
+
+    subscribeCallbacks = <String, Function>{};
   }
 
   Future<void> connect(Function success, Function(MqttConnectionState reason)? error) async {
@@ -35,6 +41,8 @@ class MqttService {
       error!(_mqttClient.connectionStatus!.state);
       _mqttClient.disconnect();
     }
+
+    _mqttClient.updates!.listen(onMessage);
   }
 
   void connected() {
@@ -43,8 +51,23 @@ class MqttService {
   void disconnected() {
   }
 
+  void onMessage(List<MqttReceivedMessage> event) {
+    final MqttReceivedMessage message =  event[0];
+    final MqttPublishMessage pMessage = message.payload;
+    final String strMessage = utf8.decode(pMessage.payload.message);
+
+    Function callback = subscribeCallbacks[message.topic]!;
+
+    callback(message.topic, strMessage);
+    // log(message.topic);
+    //
+    // log(message.toString());
+  }
+
   void addSubscribe(String topic, Function(String topic, String payload) callback )
   {
     _mqttClient.subscribe(topic, MqttQos.atMostOnce);
+    
+    subscribeCallbacks[topic] = callback;
   }
 }
